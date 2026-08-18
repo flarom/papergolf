@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>papergolf</title>
+    <link rel="stylesheet" href="style/style.css?v=20260816b">
+</head>
+<body>
+    <main class="course-page">
+        <div class="course-top">
+            <a class="back" href="index.html" title="back to menu"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#222"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg></a>
+            <span id="course-name" class="status-name"></span>
+            <span id="mulligans" class="mulligan-dots"></span>
+        </div>
+        <div id="course"></div>
+        <div class="status-bar">
+            <span id="hole-indicator" class="status-item"></span>
+            <span id="strokes" class="status-item"></span>
+            <span id="total" class="status-item"></span>
+            <button id="undo" class="status-undo" disabled>undo</button>
+        </div>
+    </main>
+
+    <div id="strength-pop" hidden><span id="strength-value"></span><span id="strength-mod" hidden></span></div>
+    <p id="message" hidden></p>
+
+    <div id="intro" class="overlay">
+        <div class="intro-card">
+            <span id="intro-number" class="intro-number"></span>
+            <h1 id="intro-name" class="intro-name"></h1>
+            <p id="intro-facts" class="intro-facts"></p>
+            <button id="intro-start">start</button>
+        </div>
+    </div>
+
+    <div id="hole-end" class="overlay" hidden>
+        <div class="panel">
+            <h2 id="hole-end-par"></h2>
+            <p id="hole-end-message"></p>
+            <button id="hole-end-next">next hole</button>
+        </div>
+    </div>
+
+    <div id="failure" class="overlay" hidden>
+        <div class="panel">
+            <h2 id="failure-message"></h2>
+            <div style="display: flex; justify-content: end; align-items: center; width: 100%; gap: 8px">
+                <button id="failure-quit" class="secondary">fail course</button>
+                <button id="failure-undo">use a mulligan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="course-end" class="overlay" hidden>
+        <div class="panel wide">
+            <h2 class="end-title">course complete!</h2>
+            <span id="course-end-name" class="end-name"></span>
+            <div class="end-stats">
+                <div id="course-end-mulligans" class="mulligan-dots"></div>
+                <span id="course-end-total" class="end-total"></span>
+            </div>
+            <div id="course-end-image" class="end-image"></div>
+            <div id="course-end-holes" class="end-holes" hidden></div>
+            <div class="end-actions">
+                <button id="course-end-copy" class="secondary">copy image</button>
+                <button id="course-end-menu" class="secondary" onclick="location.href='index.html'">back to menu</button>
+                <button id="course-end-again">play another course</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script/sound.js?v=20260816b"></script>
+    <script src="script/app.js?v=20260816b"></script>
+</body>
+</html>

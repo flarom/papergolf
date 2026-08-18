@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>papergolf</title>
+    <link rel="stylesheet" href="style/style.css?v=20260816b">
+</head>
+<body>
+    <header>
+        <div class="left">
+            <a class="title" href="index.html">paper<strong>golf</strong></a>
+        </div>
+        <div class="right">
+            <button class="secondary" onclick="location.href='paper.html'">print</button>
+            <button class="secondary">options</button>
+            <button onclick="location.href='play.html'">play the game</button>
+        </div>
+    </header>
+    <main class="gallery-page">
+        <!-- COURSE OF THE DAY -->
+        <section id="daily" class="daily">
+            <div class="daily-main">
+                <div class="top">
+                    <span class="daily-pill">course of the day</span>
+                    <h1 id="daily-name" class="daily-name"></h1>
+                    <span id="daily-date" class="daily-date"></span>
+                </div>
+                <div class="bottom">
+                    <a id="daily-play" class="daily-play" href="play.html">play course</a>
+                </div>
+            </div>
+            <div id="daily-main" class="daily-picture">
+                <div class="daily-image">
+                    <img id="daily-image" alt="course of the day" title="play course">
+                </div>
+            </div>
+        </section>
+        <!-- MISC -->
+        <section class="misc">
+            <div class="card">
+                <h2>Random course</h2>
+                <p>Continue playing a random courses</p>
+            </div>
+            <div class="card">
+                <h2>To-do</h2>
+            </div>
+            <div class="card">
+                <h2>To-do</h2>
+            </div>
+            <div class="card">
+                <h2>To-do</h2>
+            </div>
+        </section>
+        <!-- GALLERY -->
+        <section>
+            <h2 class="gallery-title">completed courses</h2>
+            <div id="gallery" class="gallery"></div>
+        </section>
+    </main>
+    <script src="script/app.js?v=20260816b"></script>
+    <script src="script/gallery.js?v=20260816b"></script>
+</body>
+</html>

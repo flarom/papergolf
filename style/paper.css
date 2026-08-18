@@ -1,0 +1,158 @@
+/* PAPER */
+
+@page {
+    size: A4 portrait;
+    margin: 12mm;
+}
+
+.paper-page {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.paper-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    width: min(90vw, 640px);
+}
+
+#paper-info {
+    font-size: 0.8em;
+    color: var(--black);
+}
+
+#sheets {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.sheet {
+    box-sizing: border-box;
+    padding: 10mm;
+    background: var(--white);
+    box-shadow: 0 0 0 1px var(--light-gray), 0 4px 16px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+.sheet-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 3mm;
+    border-bottom: 1px solid var(--light-gray);
+    margin-bottom: 4mm;
+}
+
+.sheet-heading-name {
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+.sheet-heading-mulligans {
+    display: flex;
+    gap: 2px;
+}
+
+.mulligan-ball {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1.5px solid var(--black);
+}
+
+.sheet-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0mm 6mm;
+}
+
+.field-cell {
+    container-type: size;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+    min-height: 0;
+}
+
+.field {
+    width: min(100cqw, calc(100cqh * 16 / 28));
+    aspect-ratio: 16 / 26;
+    display: grid;
+    flex: 1;
+    min-height: 0;
+}
+
+.field .tile {
+    font-size: 5px;
+}
+
+.field .tile[class*="corner"] {
+    border-radius: 1px;
+}
+
+.field .tile.sand {
+    background-attachment: scroll;
+}
+
+.field-footer {
+    width: 100%;
+    text-align: center;
+    font-size: 7pt;
+    padding-top: 1.5mm;
+    color: #444;
+    flex-shrink: 0;
+    white-space: pre;
+}
+
+.field-footer .tab {
+    display: inline-block;
+    width: 12px;
+}
+
+@media print {
+    *,
+    *::before,
+    *::after {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+    }
+
+    .no-print {
+        display: none;
+    }
+
+    body {
+        background: var(--white);
+    }
+
+    .paper-page {
+        padding: 0;
+    }
+
+    #sheets {
+        gap: 0;
+    }
+
+    .sheet {
+        box-shadow: none;
+        break-after: page;
+    }
+
+    .sheet:last-child {
+        break-after: auto;
+    }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>how to papergolf</title>
+    <link rel="stylesheet" href="style/style.css?v=20260816b">
+</head>
+<body>
+    <header>
+        <div class="left">
+            <a class="title" href="index.html">paper<strong>golf</strong></a>
+        </div>
+        <div class="right">
+            <button class="secondary" onclick="location.href='paper.html'">print</button>
+            <button class="secondary">options</button>
+            <button onclick="location.href='play.html'">play the game</button>
+        </div>
+    </header>
+    <main>
+        <article>
+            <h1>about papergolf</h1>
+            <summary>
+                <ul>
+                    <li><a href="#what-is-papergolf">what is papergolf?</a></li>
+                    <li><a href="#how-to-play">how to play</a></li>
+                </ul>
+            </summary>
+
+            <h2 id="what-is-papergolf">what is papergolf?</h2>
+            <p>papergolf is a minimalist golf game that you can play on paper. it is designed to be printed and played with a pencil, but you can also play it digitally.</p>
+            <p>it was created by Tom Brinton, for Paper Apps. (<a href="https://gladdendesign.com/products/paper-apps-golf" target="_blank" rel="noopener noreferrer">please buy his game</a>)</p>
+            <p>this game is way better played on paper than on a screen, but this port still captures the essence of the original, and adds some new features.</p>
+
+            <h2 id="how-to-play">how to play</h2>
+            <p>the goal is simple:</p>
+            <diagram style="display: flex; align-items: center; gap: 1em;">
+                <div class="tile fairway has-ball"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#222"><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>
+                <div class="tile fairway" hole="1"></div>
+            </diagram>
+            <p>i think it's already obvious enough, but just in case, your job is to get the ball into the hole.</p>
+            <p>every course has six randomly generated holes. finish all six to complete the course.</p>
+
+            <h3>rolling & moving</h3>
+            <p>each turn, roll a d6 to determine how many spaces you'll advance. you can move in any of the 8 directions: up, down, left, right, or any diagonal.</p>
+            <p>if you're positioned on the fairway, add 1 to your roll. if you're in a sand trap, subtract 1. you can also choose to putt and move just 1 space instead of rolling.</p>
+
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <diagram style="display: flex; align-items: center; gap: 1em;">
+                                <div class="tile fairway"></div>
+                            fairway
+                            </diagram>
+                        </td>
+                        <td>+1 to your roll and putt, can fly over trees</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <diagram style="display: flex; align-items: center; gap: 1em;">
+                                <div class="tile rough"></div>
+                            rough
+                            </diagram>
+                        </td>
+                        <td>default terrain, no special effects</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <diagram style="display: flex; align-items: center; gap: 1em;">
+                                <div class="tile sand"></div>
+                            sand
+                            </diagram>
+                        </td>
+                        <td>-1 to your roll</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>path &amp; obstacles</h3>
+            <p>before committing, check that your route is clear. water hazards and trees block your path completely — you can't land on them. the only exception: trees can be cleared if you're teeing off from the fairway.</p>
+            <p>you're always allowed to head in the opposite direction of your previous shot if needed.</p>
+
+            <h3>mulligans</h3>
+            <p>don't like your roll when teeing off? re-roll once and stick with the new result. you also get 6 mulligans per course — these let you re-roll at any point during play.</p>
+
+            <h3>scoring</h3>
+            <p>count every stroke you take. the par for each hole is 6. go under, feel great. go over, no big deal — it's just paper golf.</p>
+
+            <h3>terrain</h3>
+            <p><strong>rough</strong>: the default terrain. no special effects on your roll.</p>
+            <p><strong>fairway</strong>: gives you a +1 bonus to your roll and lets you fly over trees.</p>
+            <p><strong>sand</strong>: costs you a -1 penalty on your roll.</p>
+            <p><strong>water</strong>: completely off-limits. you can fly over it, but never land in it.</p>
+            <p><strong>trees</strong>: also off-limits for landing or passing through, unless you're coming from the fairway.</p>
+            <p><strong>slopes</strong>: marked with arrows. if you land on one, your ball rolls 1 extra space in that direction. if that space also has a slope, it keeps going until it stops on a neutral tile.</p>
+        </article>
+    </main>
+</body>
+</html>
