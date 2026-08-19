@@ -1,0 +1,11 @@
+<header>
+    <div class="left">
+        <a class="logo" href="index.html" id="header-logo" right-focus="header-print" down-focus="element:main">paper<strong>golf</strong></a>
+    </div>
+    <div class="right">
+        <button class="secondary" onclick="location.href='paper.html'" accesskey="p" down-focus="element:main" id="header-print" left-focus="header-logo" right-focus="header-options">print</button>
+        <button class="secondary" accesskey="o" down-focus="element:main" id="header-options" left-focus="header-print" right-focus="header-play-random">options</button>
+        <button class="secondary" onclick="location.href='play.html'" accesskey="r" down-focus="element:main" id="header-play-random" left-focus="header-options" right-focus="header-play">random course</button>
+        <button onclick="var d=new Date();location.href='play.html?seed='+(d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate())" accesskey="t" down-focus="element:main" id="header-play" left-focus="header-play-random">play today's course</button>
+    </div>
+</header>

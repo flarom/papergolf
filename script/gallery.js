@@ -31,7 +31,7 @@
             }
             if (playEl) {
                 playEl.textContent = 'play again';
-                playEl.href = 'play.html?seed=' + seed;
+                playEl.onclick = () => { window.location.href = 'play.html?seed=' + seed; };
             }
 
             const perHole = completed.holes.map((h) => (h && h.shots != null ? h.shots : 0));
@@ -60,7 +60,7 @@
         } else {
             if (nameEl) nameEl.textContent = name;
             if (dateEl) dateEl.textContent = new Date().toLocaleDateString();
-            if (playEl) playEl.href = 'play.html?seed=' + seed;
+            if (playEl) playEl.onclick = () => { window.location.href = 'play.html?seed=' + seed; };
 
             if (imgEl) {
                 const cv = courseCanvas({ name, number: seed, holes }, { header: false });

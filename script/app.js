@@ -953,6 +953,7 @@ function showIntro() {
     if (name) name.textContent = course.name;
     const facts = document.getElementById('intro-facts');
     if (facts) facts.textContent = HOLES_PER_COURSE + ' holes \u00b7 ' + MULLIGANS_PER_COURSE + ' mulligans';
+    introStart.focus();
     hideOverlays();
     const intro = document.getElementById('intro');
     if (intro) intro.hidden = false;
@@ -966,9 +967,9 @@ function updateAmbiance() {
             if (grid[r][c] === WATER) water++;
         }
 
-    let file = 'media/ambiance.mp3';
-    if (trees > 10) file = 'media/ambianceForest.mp3';
-    if (water > 10) file = 'media/ambianceLake.mp3';
+    let file = 'media/audio/ambiance.mp3';
+    if (trees > 10) file = 'media/audio/ambianceForest.mp3';
+    if (water > 10) file = 'media/audio/ambianceLake.mp3';
 
     if (file === ambianceFile) return;
 
@@ -1326,12 +1327,12 @@ function finishShot(path) {
     clearHighlight();
     animating = false;
     if (grid[last.r][last.c] === WATER) {
-        audio.playAudio('media/collapseWater.mp3', { volume: 80 });
+        audio.playAudio('media/audio/collapseWater.mp3', { volume: 80 });
         showFailure('The ball fell in the water.');
         return;
     }
     if (grid[last.r][last.c] === TREE) {
-        audio.playAudio('media/collapseTrees.mp3', { volume: 80 });
+        audio.playAudio('media/audio/collapseTrees.mp3', { volume: 80 });
         showFailure('The ball got lost in the trees.');
         return;
     }

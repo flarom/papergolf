@@ -5,18 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>papergolf</title>
     <link rel="stylesheet" href="style/style.css?v=20260816b">
+    <link rel="shortcut icon" href="media/favicon.png" type="image/x-icon">
 </head>
 <body>
-    <header>
-        <div class="left">
-            <a class="title" href="index.html">paper<strong>golf</strong></a>
-        </div>
-        <div class="right">
-            <button class="secondary" onclick="location.href='paper.html'">print</button>
-            <button class="secondary">options</button>
-            <button onclick="location.href='play.html'">play the game</button>
-        </div>
-    </header>
+    <partial name="header"></partial>
+
     <main class="gallery-page">
         <!-- COURSE OF THE DAY -->
         <section id="daily" class="daily">
@@ -27,7 +20,7 @@
                     <span id="daily-date" class="daily-date"></span>
                 </div>
                 <div class="bottom">
-                    <a id="daily-play" class="daily-play" href="play.html">play course</a>
+                    <button id="daily-play" class="daily-play" down-focus="random-play" up-focus="header-logo">play course</button>
                 </div>
             </div>
             <div id="daily-main" class="daily-picture">
@@ -39,17 +32,46 @@
         <!-- MISC -->
         <section class="misc">
             <div class="card">
-                <h2>Random course</h2>
-                <p>Continue playing a random courses</p>
+                <div class="left">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#222"><path d="M780-120q-25 0-42.5-17.5T720-180q0-25 17.5-42.5T780-240q25 0 42.5 17.5T840-180q0 25-17.5 42.5T780-120ZM400-80q-100 0-170-23.5T160-160q0-23 33-41t87-29v70h80v-720l320 156-240 124v362q86 5 143 26.5t57 51.5q0 33-70 56.5T400-80Z"/></svg>
+                </div>
+                <div class="right">
+                    <div>
+                        <h2>Random course</h2>
+                        <p>Continue playing random courses</p>
+                    </div>
+                    <div>
+                        <button onclick="window.location='play.html'" id="random-play" up-focus="daily-play" right-focus="print-fields">play random</button>
+                    </div>
+                </div>
             </div>
             <div class="card">
-                <h2>To-do</h2>
+                <div class="left">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#222"><path d="M720-680H240v-160h480v160Zm0 220q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Z"/></svg>
+                </div>
+                <div class="right">
+                    <div>
+                        <h2>Print to paper</h2>
+                        <p>Nothing more analogous than this</p>
+                    </div>
+                    <div>
+                        <button id="print-fields" up-focus="daily-play" left-focus="random-play" right-focus="learn-more">print fields</button>
+                    </div>
+                </div>
             </div>
             <div class="card">
-                <h2>To-do</h2>
-            </div>
-            <div class="card">
-                <h2>To-do</h2>
+                <div class="left">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#222"><path d="M440-280h80v-240h-80v240Zm68.5-331.5Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+                </div>
+                <div class="right">
+                    <div>
+                        <h2>Learn</h2>
+                        <p>Learn how to play the game</p>
+                    </div>
+                    <div>
+                        <button id="learn-more" up-focus="daily-play" left-focus="print-fields">learn more</button>
+                    </div>
+                </div>
             </div>
         </section>
         <!-- GALLERY -->
@@ -60,5 +82,7 @@
     </main>
     <script src="script/app.js?v=20260816b"></script>
     <script src="script/gallery.js?v=20260816b"></script>
+    <script src="script/partial.js"></script>
+    <script src="script/keyboard-navigation.js"></script>
 </body>
 </html>
