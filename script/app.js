@@ -44,11 +44,11 @@ let tileEls = [];
 let ballPos = null;
 let holePos = null;
 let pathPositions = [];
-let currentDir = null;
 let shots = 0;
 let over = false;
 let animating = false;
 let ballMarker = null;
+let diceToken = 0;
 
 let course = null;
 let mulligans = 0;
@@ -990,17 +990,15 @@ function startHole(i) {
     over = false;
     holeDone = false;
     holeHistory = [];
-    currentDir = null;
     animating = false;
 
     hideOverlays();
 
     render(ballPos, holePos);
     showMessage('');
-    const pop = document.getElementById('strength-pop');
-    if (pop) pop.hidden = true;
     updateStatusBar();
     updateAmbiance();
+    beginTurn();
 }
 
 function mulliganDots(remaining) {
@@ -1025,10 +1023,12 @@ function updateStatusBar() {
     if (mul) mul.innerHTML = mulliganDots(mulligans);
     const undoBtn = document.getElementById('undo');
     if (undoBtn) undoBtn.disabled = holeDone || over || mulligans <= 0 || holeHistory.length === 0;
+    const rerollBtn = document.getElementById('reroll');
+    if (rerollBtn) rerollBtn.disabled = holeDone || over || mulligans <= 0 || animating;
 }
 
 function undoLastMove() {
-    if (holeDone || mulligans <= 0) return;
+    if (holeDone || mulligans <= 0 || animating) return;
     if (!holeHistory.length) return;
     const snap = holeHistory.pop();
     mulligans--;
@@ -1036,9 +1036,8 @@ function undoLastMove() {
     shots = snap.shots;
     const snapIdx = pathPositions.findIndex((p) => p.shotEndIndex === snap.shots + 1);
     pathPositions = pathPositions.slice(0, snapIdx);
-    currentDir = null;
     over = false;
-    clearHighlight();
+    clearActionButtons();
     for (const el of tileEls) el.classList.remove('visited');
     for (const p of pathPositions) tileEls[p.r * COLS + p.c].classList.add('visited');
     positionMarker(ballPos);
@@ -1047,6 +1046,15 @@ function undoLastMove() {
     if (failure) failure.hidden = true;
     showMessage('');
     updateStatusBar();
+    beginTurn();
+}
+
+function rerollDice() {
+    if (holeDone || over || mulligans <= 0 || animating) return;
+    mulligans--;
+    clearActionButtons();
+    updateStatusBar();
+    beginTurn();
 }
 
 function showFailure(message) {
@@ -1239,11 +1247,6 @@ function shotPath(dir, r, c, steps, blockTrees, exactHole) {
     return path;
 }
 
-function landingTile(dir, r, c, steps) {
-    const path = shotPath(dir, r, c, steps);
-    return path[path.length - 1];
-}
-
 function playSound(name) {
     if (typeof window !== 'undefined' && window.sounds && window.sounds[name]) {
         try { window.sounds[name](); } catch (e) { /* ignore */ }
@@ -1269,51 +1272,6 @@ function moveBallTo(r, c, shotEndIndex) {
     positionMarker({ r, c });
 }
 
-function directionTo(r, c) {
-    const dr = r - ballPos.r;
-    const dc = c - ballPos.c;
-    if (dr === 0 && dc === 0) return null;
-    let best = null;
-    let bestDot = -Infinity;
-    for (const k of Object.keys(MOVES)) {
-        const dot = (MOVES[k].dr * dr + MOVES[k].dc * dc) / Math.hypot(MOVES[k].dr, MOVES[k].dc);
-        if (dot > bestDot) {
-            bestDot = dot;
-            best = k;
-        }
-    }
-    return best;
-}
-
-function clearHighlight() {
-    for (const el of tileEls) {
-        el.classList.remove('in-path');
-        el.classList.remove('landing');
-    }
-}
-
-function updateHighlight() {
-    clearHighlight();
-    if (over || animating || !currentDir) return;
-    const path = shotPath(currentDir, ballPos.r, ballPos.c, ROWS + COLS);
-    for (let i = 0; i < path.length; i++) {
-        tileEls[path[i].r * COLS + path[i].c].classList.add('in-path');
-    }
-    const last = path[path.length - 1];
-    tileEls[last.r * COLS + last.c].classList.add('landing');
-}
-
-function setDirection(dir) {
-    if (dir === currentDir) return;
-    currentDir = dir;
-    if (!dir) {
-        clearHighlight();
-        return;
-    }
-    playSound('dirChange');
-    updateHighlight();
-}
-
 function finishShot(path) {
     const last = path[path.length - 1];
     holeHistory.push({ r: ballPos.r, c: ballPos.c, shots });
@@ -1323,8 +1281,6 @@ function finishShot(path) {
         moveBallTo(path[i].r, path[i].c, isEnd ? shots : null);
     }
     tracePath();
-    currentDir = null;
-    clearHighlight();
     animating = false;
     if (grid[last.r][last.c] === WATER) {
         audio.playAudio('media/audio/collapseWater.mp3', { volume: 80 });
@@ -1337,52 +1293,145 @@ function finishShot(path) {
         return;
     }
     if (last.r === holePos.r && last.c === holePos.c) {
+        audio.playAudio('media/audio/cup.mp3', { volume: 80 })
         winHole();
     }
     updateStatusBar();
+    if (!over) beginTurn();
 }
 
 function puttSteps(r, c) {
     return (grid[r][c] === FAIRWAY || grid[r][c] === SLOPE) ? 2 : 1;
 }
 
-function smallHit() {
-    if (over || animating || !currentDir) return;
-    clearHighlight();
-    playSound('smallHit');
-        const path = shotPath(currentDir, ballPos.r, ballPos.c, puttSteps(ballPos.r, ballPos.c), true, false);
-    finishShot(path);
+function positionOverTile(el, r, c, scale, vy) {
+    const container = document.getElementById('course');
+    const size = container.getBoundingClientRect().width / COLS;
+    const d = size * scale;
+    const yCenter = (r + (vy == null ? 0.5 : vy)) * size;
+    el.style.left = (c + 0.5) * size - d / 2 + 'px';
+    el.style.top = yCenter - d / 2 + 'px';
+    el.style.width = d + 'px';
+    el.style.height = d + 'px';
+    el.style.fontSize = Math.round(size * scale * 0.7) + 'px';
 }
 
-function animateStrength(roll, modifier, done) {
-    const pop = document.getElementById('strength-pop');
-    if (!pop) {
-        done();
-        return;
-    }
-    const value = document.getElementById('strength-value');
-    const mod = document.getElementById('strength-mod');
-    pop.hidden = false;
-    if (mod) {
-        mod.textContent = modifier > 0 ? '+' + modifier : String(modifier);
-        mod.hidden = modifier === 0;
-    }
-    let i = 0;
-    if (value) value.textContent = String(i);
+function rollDice(done) {
+    const container = document.getElementById('course');
+    const size = container.getBoundingClientRect().width / COLS;
+    const token = ++diceToken;
+    const dice = document.createElement('div');
+    dice.id = 'dice';
+    const value = document.createElement('span');
+    value.className = 'dice-value';
+    dice.appendChild(value);
+    const mod = document.createElement('div');
+    mod.id = 'dice-mod';
+    mod.hidden = true;
+    mod.style.fontSize = Math.round(size * 0.50) + 'px';
+    dice.appendChild(mod);
+    positionOverTile(dice, ballPos.r, ballPos.c, 0.72, -0.5);
+    container.appendChild(dice);
+
+    const finalRoll = randomInt(1, 6);
+    const modifier = diceModifier(ballPos.r, ballPos.c);
+    let ticks = 0;
+    const totalTicks = 7;
     const tick = () => {
-        if (i < roll) {
-            i++;
-            if (value) value.textContent = String(i);
+        if (token !== diceToken) return;
+        if (ticks < totalTicks) {
+            value.textContent = String(randomInt(1, 6));
             playSound('strengthTick');
-            setTimeout(tick, 50);
+            ticks++;
+            setTimeout(tick, 90);
         } else {
+            value.textContent = String(finalRoll);
+            dice.classList.add('settled');
+            playSound('strengthTick');
+            if (modifier !== 0) {
+                mod.textContent = modifier > 0 ? '+' + modifier : String(modifier);
+                mod.hidden = false;
+                playSound('dirChange');
+            }
             setTimeout(() => {
-                pop.hidden = true;
-                done();
-            }, 50);
+                if (token !== diceToken) return;
+                dice.remove();
+                done(finalRoll, modifier);
+            }, 380);
         }
     };
-    setTimeout(tick, 200);
+    setTimeout(tick, 250);
+}
+
+function addActionButton(r, c, distance, kind, index, onClick) {
+    const container = document.getElementById('course');
+    const btn = document.createElement('div');
+    btn.className = 'action-btn ' + kind;
+    btn.textContent = String(distance);
+    btn.style.animationDelay = (index * 0.045) + 's';
+    positionOverTile(btn, r, c, 0.65);
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        onClick();
+    });
+    container.appendChild(btn);
+}
+
+function clearActionButtons() {
+    const container = document.getElementById('course');
+    const old = container.querySelectorAll('.action-btn');
+    for (const el of old) el.remove();
+    const dice = document.getElementById('dice');
+    if (dice) dice.remove();
+}
+
+function showActionButtons(roll, modifier, strength) {
+    clearActionButtons();
+    const puttDist = puttSteps(ballPos.r, ballPos.c);
+    let index = 0;
+    for (const dir of Object.keys(MOVES)) {
+        const puttPath = shotPath(dir, ballPos.r, ballPos.c, puttDist, true, false);
+        const puttLand = puttPath[puttPath.length - 1];
+        const puttMoves = puttLand.r !== ballPos.r || puttLand.c !== ballPos.c;
+
+        const shotP = shotPath(dir, ballPos.r, ballPos.c, strength);
+        const shotLand = shotP[shotP.length - 1];
+        const shotMoves = shotLand.r !== ballPos.r || shotLand.c !== ballPos.c;
+
+        const sameLand = puttMoves && shotMoves && puttLand.r === shotLand.r && puttLand.c === shotLand.c;
+
+        if (puttMoves && !sameLand) {
+            addActionButton(puttLand.r, puttLand.c, puttDist, 'putt', index++, () => {
+                commitShot(dir, puttDist, true, false, 'smallHit');
+            });
+        }
+        if (shotMoves) {
+            addActionButton(shotLand.r, shotLand.c, strength, 'shot', index++, () => {
+                commitShot(dir, strength, false, true, 'hit');
+            });
+        }
+    }
+}
+
+function beginTurn() {
+    if (over) return;
+    animating = true;
+    rollDice((roll, modifier) => {
+        const strength = Math.max(0, roll + modifier);
+        showActionButtons(roll, modifier, strength);
+        animating = false;
+    });
+}
+
+function commitShot(dir, distance, blockTrees, exactHole, sound) {
+    if (over || animating) return;
+    clearActionButtons();
+    animating = true;
+    playSound(sound);
+    const path = shotPath(dir, ballPos.r, ballPos.c, distance, blockTrees, exactHole);
+    animatePath(path, () => {
+        finishShot(path);
+    });
 }
 
 function animatePath(path, done) {
@@ -1422,37 +1471,6 @@ function animatePath(path, done) {
         setTimeout(step, 100);
     };
     step();
-}
-
-function normalHit() {
-    if (over || animating || !currentDir) return;
-    clearHighlight();
-    animating = true;
-    const roll = randomInt(1, 6);
-    const modifier = diceModifier(ballPos.r, ballPos.c);
-    const strength = Math.max(0, roll + modifier);
-    animateStrength(roll, modifier, () => {
-        playSound('hit');
-        const path = shotPath(currentDir, ballPos.r, ballPos.c, strength);
-        animatePath(path, () => {
-            finishShot(path);
-        });
-    });
-}
-
-function handleCourseMove(e) {
-    if (over || animating) return;
-    const tile = e.target.closest('.tile');
-    if (!tile) {
-        setDirection(null);
-        return;
-    }
-    const idx = tileEls.indexOf(tile);
-    if (idx < 0) {
-        setDirection(null);
-        return;
-    }
-    setDirection(directionTo(Math.floor(idx / COLS), idx % COLS));
 }
 
 function winHole() {
@@ -1547,12 +1565,7 @@ if (undoButton) {
     undoButton.addEventListener('click', undoLastMove);
 }
 
-const courseContainer = document.getElementById('course');
-if (courseContainer) {
-    courseContainer.addEventListener('mousemove', handleCourseMove);
-    courseContainer.addEventListener('click', normalHit);
-    courseContainer.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        smallHit();
-    });
+const rerollButton = document.getElementById('reroll');
+if (rerollButton) {
+    rerollButton.addEventListener('click', rerollDice);
 }
