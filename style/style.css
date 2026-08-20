@@ -897,6 +897,7 @@ section.daily {
         display: inline-block;
         vertical-align: middle;
         opacity: .5;
+        animation: move-bg 180s infinite linear;
 
         img {
             display: block;
@@ -952,6 +953,18 @@ section.daily {
     }
 }
 
+@keyframes move-bg {
+    0% {
+        transform: rotate3d(1, -1, 0, 3deg) translateX(10vw) translateY(-25vw) scale(1.2);
+    }
+    50% {
+        transform: rotate3d(1, -1, 0, 3deg) translateX(-10vw) translateY(-25vw) scale(1.2);
+    }
+    100% {
+        transform: rotate3d(1, -1, 0, 3deg) translateX(10vw) translateY(-25vw) scale(1.2);
+    }
+}
+
 section.misc {
     display: flex;
     width: min(92vw, 1440px);
@@ -981,10 +994,19 @@ section.misc {
             min-width: 64px;
         }
         .right {
+            width: 100%;
             padding: 10px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             gap: 20px;
+
+            .button-container {
+                display: flex;
+                align-items: center;
+                justify-content: end;
+                gap: 8px;
+            }
         }
     }
 }

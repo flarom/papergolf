@@ -1,5 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<!--
+    papergolf; a tiny game about navigating minimalist courses. inspired by paperapps™ golf..
+    Copyright (C) 2026  flarom
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +26,8 @@
     <link rel="stylesheet" href="style/style.css?v=20260819a">
 </head>
 <body>
-    <header>
-        <div class="left">
-            <a class="title" href="index.html">paper<strong>golf</strong></a>
-        </div>
-        <div class="right">
-            <button class="secondary" onclick="location.href='paper.html'">print</button>
-            <button class="secondary">options</button>
-            <button onclick="location.href='play.html'">play the game</button>
-        </div>
-    </header>
+    <partial name="header"></partial>
+
     <main>
         <article>
             <h1>about papergolf</h1>
@@ -28,7 +39,7 @@
             </summary>
 
             <h2 id="what-is-papergolf">what is papergolf?</h2>
-            <p>papergolf is a minimalist golf game that you can play on paper. it is designed to be printed and played with a pencil, but you can also play it digitally.</p>
+            <p>papergolf; a tiny game about navigating minimalist courses. inspired by paperapps™ golf. that you can play on paper. it is designed to be printed and played with a pencil, but you can also play it digitally.</p>
             <p>it was created by Tom Brinton, for Paper Apps. (<a href="https://gladdendesign.com/products/paper-apps-golf" target="_blank" rel="noopener noreferrer">please buy his game</a>)</p>
             <p>this game is way better played on paper than on a screen, but this port still captures the essence of the original, and adds some new features.</p>
 
@@ -97,5 +108,8 @@
             <p><strong>slopes</strong>: marked with arrows. if you land on one, your ball rolls 1 extra space in that direction. if that space also has a slope, it keeps going until it stops on a neutral tile.</p>
         </article>
     </main>
+
+    <script src="script/partial.js"></script>
+    <script src="script/keyboard-navigation.js"></script>
 </body>
 </html>

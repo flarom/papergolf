@@ -1,5 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<!--
+    papergolf; a tiny game about navigating minimalist courses. inspired by paperapps™ golf..
+    Copyright (C) 2026  flarom
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,9 +57,9 @@
                 <div class="right">
                     <div>
                         <h2>random course</h2>
-                        <p>continue playing random courses</p>
+                        <p>discover a new course with a random seed</p>
                     </div>
-                    <div>
+                    <div class="button-container">
                         <button onclick="window.location='play.html'" id="random-play" up-focus="daily-play" right-focus="print-fields">play random</button>
                     </div>
                 </div>
@@ -52,9 +71,10 @@
                 <div class="right">
                     <div>
                         <h2>print to paper</h2>
-                        <p>nothing more analogous than this</p>
+                        <p>print a page of courses and play with pen and paper</p>
+                        <p>(please use recycled paper)</p>
                     </div>
-                    <div>
+                    <div class="button-container">
                         <button id="print-fields" up-focus="daily-play" left-focus="random-play" right-focus="learn-more">print fields</button>
                     </div>
                 </div>
@@ -66,10 +86,10 @@
                 <div class="right">
                     <div>
                         <h2>learn</h2>
-                        <p>learn how to play the game</p>
+                        <p>learn the rules and how to play</p>
                     </div>
-                    <div>
-                        <button id="learn-more" up-focus="daily-play" left-focus="print-fields">learn more</button>
+                    <div class="button-container">
+                        <button onclick="window.location='learn.html'" id="learn-more" up-focus="daily-play" left-focus="print-fields">learn more</button>
                     </div>
                 </div>
             </div>
@@ -80,6 +100,9 @@
             <div id="gallery" class="gallery"></div>
         </section>
     </main>
+
+    <partial name="footer"></partial>
+
     <script src="script/app.js?v=20260819c"></script>
     <script src="script/gallery.js?v=20260816b"></script>
     <script src="script/partial.js"></script>
