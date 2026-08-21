@@ -23,7 +23,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>papergolf</title>
-    <link rel="stylesheet" href="style/style.css?v=20260819a">
+    <link rel="stylesheet" href="style/style.css?v=20260820e">
     <link rel="shortcut icon" href="media/favicon.png" type="image/x-icon">
 </head>
 <body>
@@ -95,16 +95,20 @@
             </div>
         </section>
         <!-- GALLERY -->
-        <section>
+        <section class="gallery-section">
             <h2 class="gallery-title">completed courses</h2>
-            <div id="gallery" class="gallery"></div>
+            <div class="gallery-carousel">
+                <button id="gallery-prev" class="gallery-nav secondary" aria-label="scroll left" left-focus="gallery-next" right-focus="gallery-next" disabled><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="222"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/></svg></button>
+                <div id="gallery" class="gallery"></div>
+                <button id="gallery-next" class="gallery-nav secondary" aria-label="scroll right" left-focus="gallery-prev" right-focus="gallery-prev" disabled><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="222"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg></button>
+            </div>
         </section>
     </main>
 
     <partial name="footer"></partial>
 
-    <script src="script/app.js?v=20260819c"></script>
-    <script src="script/gallery.js?v=20260816b"></script>
+    <script src="script/app.js?v=20260819d"></script>
+    <script src="script/gallery.js?v=20260820f"></script>
     <script src="script/partial.js"></script>
     <script src="script/keyboard-navigation.js"></script>
 </body>

@@ -398,38 +398,6 @@ function fixSlopesPointingAtTrees() {
     }
 }
 
-function cleanUpIsolatedTiles() {
-    const types = new Set([SAND, TREE, FAIRWAY, WATER]);
-    const visited = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
-    for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-            const t = grid[r][c];
-            if (!types.has(t) || visited[r][c]) continue;
-            const stack = [[r, c]];
-            visited[r][c] = true;
-            const comp = [];
-            while (stack.length) {
-                const [cr, cc] = stack.pop();
-                comp.push([cr, cc]);
-                for (const d of DIRECTION_KEYS) {
-                    const rr = cr + DIRECTIONS[d].dr;
-                    const cc2 = cc + DIRECTIONS[d].dc;
-                    if (outOfBounds(rr, cc2)) continue;
-                    if (grid[rr][cc2] !== t || visited[rr][cc2]) continue;
-                    visited[rr][cc2] = true;
-                    stack.push([rr, cc2]);
-                }
-            }
-            if (comp.length < MIN_BLOB_SIZE && !isProtected(comp[0][0], comp[0][1])) {
-                for (const [cr, cc] of comp) {
-                    grid[cr][cc] = ROUGH;
-                    treeType[cr][cc] = null;
-                }
-            }
-        }
-    }
-}
-
 function isAligned(a, b) {
     return a.r === b.r || a.c === b.c;
 }
@@ -482,7 +450,6 @@ function generateCourse() {
     }
 
     fixSlopesPointingAtTrees();
-    cleanUpIsolatedTiles();
 
     return { hole, start };
 }
@@ -1247,9 +1214,9 @@ function shotPath(dir, r, c, steps, blockTrees, exactHole) {
     return path;
 }
 
-function playSound(name) {
+function playSound(name, ...args) {
     if (typeof window !== 'undefined' && window.sounds && window.sounds[name]) {
-        try { window.sounds[name](); } catch (e) { /* ignore */ }
+        try { window.sounds[name](...args); } catch (e) { /* ignore */ }
     }
 }
 
@@ -1370,6 +1337,7 @@ function addActionButton(r, c, distance, kind, index, onClick) {
     btn.textContent = String(distance);
     btn.style.animationDelay = (index * 0.045) + 's';
     positionOverTile(btn, r, c, 0.65);
+    playSound('buttonPop', index * 0.045);
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
         onClick();

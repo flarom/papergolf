@@ -46,6 +46,9 @@
         smallHit() {
             blip(260, 130, 0.1, 'sine', 0.3);
         },
+        buttonPop(delay) {
+            blip(100, 300, 0.09, 'triangle', 0.1, delay || 0);
+        },
     };
 
     const bufferCache = new Map();
